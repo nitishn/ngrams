@@ -17,12 +17,14 @@ using namespace std;
 // Function prototypes
 void parseFile( string );
 void generateNGram( int );
+void printToFile( string );
 
 // Global constants
 vector<ngram> ngrams;	// Container of n-grams
 vector<string> buffer;  // Buffer container
 int nConstant = 0;		// Constant for any n, n-gram
 string space = " ";
+
 
 int main( int argc, char **argv ) {
 
@@ -42,9 +44,10 @@ int main( int argc, char **argv ) {
 
 
 	for( uint i = 0; i < ngrams.size(); i++ ) {
-			cout << ngrams[i].getValue() << " " << ngrams[i].getCount() << endl;
+	//		cout << ngrams[i].getValue() << " " << ngrams[i].getCount() << endl;
 		}
 
+	printToFile(filename);
 
 	return 0;
 }
@@ -107,4 +110,21 @@ void parseFile( string filename ) {
 
 	// Close file
 		fin.close();
+}
+
+void printToFile( string filename ) {
+
+	ofstream out;
+	out.open("doc.txt");
+
+	out << "db.myDoc.insert({file: \"" << filename << "\""", counts: [";
+
+
+	for( uint i = 0; i < ngrams.size(); i++ ) {
+			out << "{gram: "<< "\"" << ngrams[i].getValue() << "\"" << ", " << "count: "<< ngrams[i].getCount() << "}," << endl;
+		}
+
+	out<< "]});" << endl;
+
+	out.close();
 }
